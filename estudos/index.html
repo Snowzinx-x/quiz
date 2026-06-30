@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Divertido</title>
+    <style>
+        /* Centraliza tudo na tela e deixa o visual limpo */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            min-height: 40px; /* Evita que a tela mude de tamanho quando o texto mudar */
+        }
+
+        .container-botoes {
+            position: relative;
+            width: 300px;
+            height: 150px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #btnSim {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        #btnSim:hover {
+            background-color: #27ae60;
+        }
+
+        #btnNao {
+            background-color: #e74c3c;
+            color: white;
+            position: absolute; /* Permite que o botão se mova livremente */
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="pergunta">Você é sebosa?</h1>
+
+    <div class="container-botoes">
+        <button id="btnSim" onclick="responderSim()">Sim</button>
+        <button id="btnNao" onmouseover="moverBotao()" onclick="moverBotao()">Não</button>
+    </div>
+
+    <script>
+        let cliquesNoNao = 0;
+        const pergunta = document.getElementById('pergunta');
+        const btnNao = document.getElementById('btnNao');
+        const btnSim = document.getElementById('btnSim');
+
+        function moverBotao() {
+            cliquesNoNao++;
+
+            // Muda a pergunta e o texto dos botões de acordo com as vezes que tentou clicar no Não
+            if (cliquesNoNao === 1) {
+                pergunta.innerText = "Você tem certeza?";
+            } else if (cliquesNoNao >= 2) {
+                pergunta.innerText = "Você tem certeza?";
+                btnNao.innerText = "Sim, tenho certeza";
+                
+                // Transforma o botão "Não" em um botão de "Sim" de verdade
+                btnNao.style.backgroundColor = "#2ecc71";
+                btnNao.onclick = responderSim;
+                btnNao.onmouseover = null; // Para de fugir quando vira "Sim"
+                return; // Para o código aqui para o botão não fugir mais
+            }
+
+            // Lógica para fazer o botão "fugir" para uma posição aleatória dentro da caixinha
+            const larguraMax = 200; 
+            const alturaMax = 100; 
+
+            const aleatorioX = Math.floor(Math.random() * larguraMax) - (larguraMax / 2);
+            const aleatorioY = Math.floor(Math.random() * alturaMax) - (alturaMax / 2);
+
+            btnNao.style.left = aleatorioX + 'px';
+            btnNao.style.top = aleatorioY + 'px';
+        }
+
+        function responderSim() {
+            // Mensagem final de sucesso
+            pergunta.innerText = "Que bom que você concorda! 😂";
+            
+            // Esconde os botões após a resposta final
+            btnSim.style.display = 'none';
+            btnNao.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
