@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            
+            /* Imagem de fundo */
+            background-image: url('fundo.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            overflow: hidden;
+        }
+        
+        .caixa-jogo {
+            background-color: transparent;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+            margin-bottom: 40px;
+            text-align: center;
+            min-height: 40px;
+        }
+
+        .container-botoes {
+            position: relative;
+            width: 500px; 
+            height: 250px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        #btnSim {
+            background-color: #2ecc71;
+            color: white;
+            margin-right: 60px; /* Empurra o botão Não para o lado sem bugar */
+        }
+
+        #btnNao {
+            background-color: #e74c3c;
+            color: white;
+            position: absolute;
+            z-index: 999;
+            margin-left: 160px; /* Posição inicial correta ao lado do Sim */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="caixa-jogo">
+        <h1 id="pergunta">Você é sebosa?</h1>
+
+        <div class="container-botoes">
+            <button id="btnSim" onclick="responderSim()">Sim</button>
+            <button id="btnNao" onclick="moverBotao()">Não</button>
+        </div>
+    </div>
+
+    <script>
+        let cliquesNoNao = 0;
+        const pergunta = document.getElementById('pergunta');
+        const btnNao = document.getElementById('btnNao');
+        const btnSim = document.getElementById('btnSim');
+
+        function moverBotao() {
+            cliquesNoNao++;
+
+            // Zera as margens iniciais para o botão se mover livremente
+            btnNao.style.margin = '0';
+
+            if (cliquesNoNao === 1) {
+                pergunta.innerText = "Você tem certeza?";
+            } else if (cliquesNoNao >= 2) {
+                pergunta.innerText = "Você e sebosa?";
+                btnNao.innerText = "Sim, tenho certeza";
+                btnNao.style.backgroundColor = "#2ecc71";
+                btnNao.onclick = responderSim;
+                
+                // Reseta as posições para os botões alinharem perfeitamente no final
+                btnNao.style.left = 'auto';
+                btnNao.style.top = 'auto';
+                btnNao.style.position = 'static';
+                btnSim.style.marginRight = '20px'; 
+                return;
+            }
+
+            const container = document.querySelector('.container-botoes');
+            
+            // Conta o tamanho exato da caixa para o botão correr bastante sem sumir
+            const larguraMax = container.clientWidth - btnNao.clientWidth;
+            const alturaMax = container.clientHeight - btnNao.clientHeight;
+
+            const aleatorioX = Math.floor(Math.random() * larguraMax);
+            const aleatorioY = Math.floor(Math.random() * alturaMax);
+
+            btnNao.style.left = aleatorioX + 'px';
+            btnNao.style.top = aleatorioY + 'px';
+        }
+
+        function responderSim() {
+            pergunta.innerText = "Que bom que você concorda! 😂";
+            btnSim.style.display = 'none';
+            btnNao.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
